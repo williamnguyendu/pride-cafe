@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pride Café - Đăng Ký Tham Gia</title>
+    <!-- Sử dụng Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Hiệu ứng loading vui nhộn */
+        .cup-loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #6b4c3a;
+            border-bottom: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fcf9f2; }
+        .bg-coffee { background-color: #6b4c3a; }
+        .text-coffee { color: #6b4c3a; }
+        .border-coffee { border-color: #6b4c3a; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col justify-center py-6 sm:py-12">
+
+    <!-- KHU VỰC LOADING -->
+    <div id="loading" class="flex flex-col items-center justify-center h-screen fixed inset-0 bg-[#fcf9f2] z-50">
+        <div class="cup-loader mb-4"></div>
+        <p class="text-lg font-semibold text-coffee animate-pulse">Đang pha cà phê và tải dữ liệu, chờ chút nhé...</p>
+    </div>
+
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 hidden" id="app-content">
+        <div class="relative px-4 py-8 bg-white shadow-lg sm:rounded-3xl sm:p-10 border-t-8 border-coffee">
+            <div class="max-w-md mx-auto">
+                <div class="text-center mb-6">
+                    <h1 class="text-3xl font-bold text-coffee mb-2">☕ Pride Café</h1>
+                    <p class="text-gray-500 text-sm">Nơi gắn kết cộng đồng Pride Home</p>
+                </div>
+
+                <!-- KHU VỰC THÔNG BÁO ĐÓNG CỔNG -->
+                <div id="closed-message" class="hidden text-center bg-red-50 p-6 rounded-xl border border-red-200">
+                    <svg class="mx-auto h-12 w-12 text-red-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <h3 class="text-lg font-bold text-red-700 mb-2">Cổng làng chưa mở hoặc đã đóng!</h3>
+                    <p class="text-red-600">Vui lòng liên hệ <span class="font-bold">0987.500.533</span> để được hỗ trợ.</p>
+                </div>
+
+                <!-- KHU VỰC ĐĂNG KÝ (FORM & INFO) -->
+                <div id="registration-section" class="hidden">
+                    <!-- Box Thông tin sự kiện -->
+                    <div class="bg-amber-50 rounded-xl p-5 mb-6 border border-amber-200 shadow-sm">
+                        <h2 class="font-bold text-lg text-amber-800 border-b border-amber-200 pb-2 mb-3">📍 Thông tin sự kiện</h2>
+                        <ul class="space-y-2 text-sm text-amber-900">
+                            <li><span class="font-semibold">⏰ Thời gian tổ chức:</span> <span id="event-time"></span></li>
+                            <li><span class="font-semibold">🏡 Địa điểm:</span> <span id="event-location"></span></li>
+                            <li><span class="font-semibold">⌛ Thời gian mở đăng ký:</span> <br> <span id="event-reg-time" class="italic"></span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Form điền thông tin -->
+                    <form id="reg-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Họ và Tên</label>
+                            <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-coffee focus:border-coffee sm:text-sm" placeholder="Nhập tên của bạn">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Số điện thoại (có dùng Zalo)</label>
+                            <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-coffee focus:border-coffee sm:text-sm" placeholder="09xx.xxx.xxx">
+                        </div>
+                        
+                        <button type="submit" id="submit-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-coffee hover:bg-[#523829] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coffee font-bold text-lg transition-colors">
+                            🎉 Đăng ký ngay
+                        </button>
+                    </form>
+
+                    <!-- Lưu ý từ BTC -->
+                    <div class="mt-8 bg-gray-50 p-4 rounded-lg text-xs text-gray-600 border border-gray-200">
+                        <h4 class="font-bold mb-2 uppercase text-gray-700">Lưu ý quan trọng:</h4>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li>BTC chỉ duyệt đăng ký khi bạn là thành viên của Cộng đồng Pride Home. Nếu chưa là thành viên vui lòng liên hệ 0987.500.533 (Zalo).</li>
+                            <li>Đồng ý cho BTC sử dụng hình ảnh cho mục đích truyền thông.</li>
+                            <li>Giảm 10% tại quầy khi đọc Tên + 4 số cuối điện thoại.</li>
+                            <li>Khu vực tổ chức riêng biệt (Private Area) chỉ dành cho khách đã đăng ký.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- KHU VỰC ĐĂNG KÝ THÀNH CÔNG -->
+                <div id="success-section" class="hidden text-center py-6">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                        <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Đăng ký thành công!</h2>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4 text-left inline-block w-full border">
+                        <p class="text-sm"><span class="font-semibold">Họ tên:</span> <span id="res-name"></span></p>
+                        <p class="text-sm"><span class="font-semibold">Số điện thoại:</span> <span id="res-phone"></span></p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Xin vui lòng chờ Trưởng làng phê duyệt. Trưởng làng sẽ gửi xác nhận qua Zalo theo số điện thoại đã đăng ký.
+                    </p>
+                    <p class="text-sm font-semibold text-coffee">
+                        Cần hỗ trợ vui lòng liên hệ: 0987.500.533
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BƯỚC QUAN TRỌNG: Dán URL Web App Google Apps Script của bạn vào đây
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbw0GSlZCctC5ZrQsKQgqJHmq9UbR6Z_51_ptbqKjrn0Cq7g942RiT_Sahu205Vbewdy/exec"; 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchEventData();
+        });
+
+        // Format Date sang dạng dễ nhìn (dd/mm/yyyy hh:mm)
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const pad = (n) => n < 10 ? '0' + n : n;
+            return `${pad(date.getDate())}/${pad(date.getMonth()+1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        async function fetchEventData() {
+            try {
+                const response = await fetch(`${GAS_URL}?action=getEvent`);
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app-content').classList.remove('hidden');
+
+                if (data.status === 'closed' || data.error) {
+                    showClosedMessage();
+                    return;
+                }
+
+                const now = new Date();
+                const dangKyTu = new Date(data.dangKyTu);
+                const dangKyDen = new Date(data.dangKyDen);
+
+                // Kiểm tra điều kiện thời gian đăng ký
+                if (now < dangKyTu || now > dangKyDen) {
+                    showClosedMessage();
+                } else {
+                    // Mở form
+                    document.getElementById('registration-section').classList.remove('hidden');
+                    
+                    // Điền dữ liệu vào Box
+                    document.getElementById('event-time').innerText = formatDate(data.ngayToChuc);
+                    document.getElementById('event-location').innerText = data.diaDiem;
+                    document.getElementById('event-reg-time').innerText = `Từ ${formatDate(data.dangKyTu)} đến ${formatDate(data.dangKyDen)}`;
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app-content').classList.remove('hidden');
+                showClosedMessage(); // Lỗi mạng cũng hiện thông báo đóng để liên hệ
+            }
+        }
+
+        function showClosedMessage() {
+            document.getElementById('closed-message').classList.remove('hidden');
+            document.getElementById('registration-section').classList.add('hidden');
+        }
+
+        // Xử lý gửi Form
+        document.getElementById('reg-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const btn = document.getElementById('submit-btn');
+
+            btn.innerText = 'Đang xử lý...';
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+
+            try {
+                // Sử dụng text/plain để tránh lỗi CORS Preflight từ Browser
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify({
+                        action: 'register',
+                        name: name,
+                        phone: phone
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('registration-section').classList.add('hidden');
+                    document.getElementById('success-section').classList.remove('hidden');
+                    document.getElementById('res-name').innerText = name;
+                    document.getElementById('res-phone').innerText = phone;
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại! ' + result.message);
+                }
+            } catch (error) {
+                alert('Lỗi kết nối, vui lòng thử lại sau!');
+                console.error(error);
+            } finally {
+                btn.innerText = '🎉 Đăng ký ngay';
+                btn.disabled = false;
+                btn.classList.remove('opacity-70');
+            }
+        });
+    </script>
+</body>
+</html>
